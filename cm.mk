@@ -16,21 +16,19 @@
 
 $(call inherit-product, device/sony/nypon/full_nypon.mk)
 
-# Inherit CM common GSM stuff.
-$(call inherit-product, vendor/cm/config/gsm.mk)
 
 # Inherit CM common Phone stuff.
 $(call inherit-product, vendor/cm/config/common_full_phone.mk)
-
-# Enhanced NFC
-$(call inherit-product, vendor/cm/config/nfc_enhanced.mk)
 
 # Screen
 TARGET_SCREEN_HEIGHT := 960
 TARGET_SCREEN_WIDTH := 540
 
-#Sony Apps in play store
-PRODUCT_GMS_CLIENTID_BASE := android-sonyericsson
+# Build fingerprints
+PRODUCT_BUILD_PROP_OVERRIDES += \
+    PRODUCT_NAME=LT22i_1262-1172 \
+    PRIVATE_BUILD_DESC="LT22i-user 4.1.2 6.1.1.B.1.100 m7t3zw test-keys" \
+    BUILD_FINGERPRINT="SEMC/LT22i_1262-1172/LT22i:4.1.2/6.1.1.B.1.100/m7t3zw:user/release-keys"
 
 PRODUCT_NAME := cm_nypon
 PRODUCT_DEVICE := nypon
