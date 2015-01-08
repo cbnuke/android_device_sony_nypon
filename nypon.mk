@@ -29,12 +29,9 @@ $(call inherit-product, device/sony/montblanc-common/montblanc.mk)
 # These are the hardware-specific features
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml \
-    frameworks/native/data/etc/android.hardware.nfc.xml:system/etc/permissions/android.hardware.nfc.xml \
     frameworks/native/data/etc/android.hardware.sensor.gyroscope.xml:system/etc/permissions/android.hardware.sensor.gyroscope.xml \
     frameworks/native/data/etc/android.hardware.touchscreen.multitouch.distinct.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.jazzhand.xml \
-    frameworks/native/data/etc/com.android.nfc_extras.xml:system/etc/permissions/com.google.android.nfc_extras.xml \
-    frameworks/native/data/etc/android.hardware.nfc.hce.xml:system/etc/permissions/android.hardware.nfc.hce.xml \
-    frameworks/native/data/etc/com.nxp.mifare.xml:system/etc/permissions/com.nxp.mifare.xml
+    frameworks/native/data/etc/com.android.nfc_extras.xml:system/etc/permissions/com.google.android.nfc_extras.xml
 
 # This device is xhdpi.  However the platform doesn't
 # currently contain all of the bitmaps at xhdpi density so
@@ -95,7 +92,7 @@ PRODUCT_PROPERTY_OVERRIDES += ro.build.characteristics=nosdcard
 PRODUCT_PROPERTY_OVERRIDES += ro.semc.product.user_storage=emmc_only
 
 # NFC Support
-PRODUCT_PACKAGES += \
+#PRODUCT_PACKAGES += \
     libnfc \
     libnfc_jni \
     libnfc_ndef \
@@ -104,12 +101,12 @@ PRODUCT_PACKAGES += \
     com.android.nfc_extras
 
 # NFCEE access control
-ifeq ($(TARGET_BUILD_VARIANT),user)
-    NFCEE_ACCESS_PATH := $(LOCAL_PATH)/config/nfcee_access.xml
-else
-    NFCEE_ACCESS_PATH := $(LOCAL_PATH)/config/nfcee_access_debug.xml
-endif
-PRODUCT_COPY_FILES += \
+#ifeq ($(TARGET_BUILD_VARIANT),user)
+#    NFCEE_ACCESS_PATH := $(LOCAL_PATH)/config/nfcee_access.xml
+#else
+#    NFCEE_ACCESS_PATH := $(LOCAL_PATH)/config/nfcee_access_debug.xml
+#endif
+#PRODUCT_COPY_FILES += \
     $(NFCEE_ACCESS_PATH):system/etc/nfcee_access.xml
 
 # Inhert dalvik heap values from aosp
@@ -141,23 +138,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
   ste.nmf.dsp.nodump=1
 
 # NFC
-PRODUCT_PROPERTY_OVERRIDES += \
+#PRODUCT_PROPERTY_OVERRIDES += \
   ro.nfc.vendor.name=nxp
 
 # Low ram
 PRODUCT_PROPERTY_OVERRIDES += ro.config.low_ram=false
 
-#Kernel modules
-PRODUCT_COPY_FILES += \
-   $(LOCAL_PATH)/prebuilt/modules/bnep.ko:system/lib/modules/bnep.ko \
-   $(LOCAL_PATH)/prebuilt/modules/cifs.ko:system/lib/modules/cifs.ko \
-   $(LOCAL_PATH)/prebuilt/modules/cw1200_core.ko:system/lib/modules/cw1200_core.ko \
-   $(LOCAL_PATH)/prebuilt/modules/cw1200_wlan.ko:system/lib/modules/cw1200_wlan.ko \
-   $(LOCAL_PATH)/prebuilt/modules/frandom.ko:system/lib/modules/frandom.ko \
-   $(LOCAL_PATH)/prebuilt/modules/mmc_test.ko:system/lib/modules/mmc_test.ko \
-   $(LOCAL_PATH)/prebuilt/modules/nls_utf8.ko:system/lib/modules/nls_utf8.ko \
-   $(LOCAL_PATH)/prebuilt/modules/oprofile.ko:system/lib/modules/oprofile.ko \
-   $(LOCAL_PATH)/prebuilt/modules/pwr.ko:system/lib/modules/pwr.ko \
-   $(LOCAL_PATH)/prebuilt/modules/rng-core.ko:system/lib/modules/rng-core.ko \
-   $(LOCAL_PATH)/prebuilt/modules/scsi_wait_scan.ko:system/lib/modules/scsi_wait_scan.ko \
-   $(LOCAL_PATH)/prebuilt/modules/tun.ko:system/lib/modules/tun.ko
