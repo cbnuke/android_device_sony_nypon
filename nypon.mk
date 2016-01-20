@@ -26,6 +26,9 @@ TARGET_SPECIFIC_HEADER_PATH += device/sony/nypon/include
 # Inherit the montblanc-common definitions
 $(call inherit-product, device/sony/montblanc-common/montblanc.mk)
 
+# Inhert vendor proprietary files
+$(call inherit-product-if-exists, vendor/sony/nypon/nypon-vendor.mk)
+
 # These are the hardware-specific features
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml \
@@ -37,8 +40,9 @@ PRODUCT_COPY_FILES += \
 # currently contain all of the bitmaps at xhdpi density so
 # we do this little trick to fall back to the hdpi version
 # if the xhdpi doesn't exist.
-PRODUCT_AAPT_CONFIG := normal hdpi xhdpi
+PRODUCT_AAPT_CONFIG := normal
 PRODUCT_AAPT_PREF_CONFIG := xhdpi
+PRODUCT_AAPT_PREBUILT_DPI := xhdpi
 
 # Configuration scripts
 PRODUCT_COPY_FILES += \
@@ -56,7 +60,8 @@ PRODUCT_COPY_FILES += \
 
 #TWRP
 PRODUCT_COPY_FILES += \
-   $(LOCAL_PATH)/config/twrp.fstab:recovery/root/etc/twrp.fstab
+   $(LOCAL_PATH)/config/twrp.fstab:recovery/root/etc/twrp.fstab \
+   $(LOCAL_PATH)/config/init.recovery.st-ericsson.rc:root/init.recovery.st-ericsson.rc
 
 # Media Profiles
 PRODUCT_COPY_FILES += \
@@ -86,61 +91,35 @@ PRODUCT_COPY_FILES += \
    $(LOCAL_PATH)/config/cn_server:system/bin/cn_server
 
 # Android kind of memory
-PRODUCT_PROPERTY_OVERRIDES += ro.build.characteristics=nosdcard
+PRODUCT_CHARACTERISTICS := nosdcard
 
 # PC Companion kind of memory
 PRODUCT_PROPERTY_OVERRIDES += ro.semc.product.user_storage=emmc_only
 
-# NFC Support
-#PRODUCT_PACKAGES += \
-    libnfc \
-    libnfc_jni \
-    libnfc_ndef \
-    Nfc \
-    Tag \
-    com.android.nfc_extras
-
-# NFCEE access control
-#ifeq ($(TARGET_BUILD_VARIANT),user)
-#    NFCEE_ACCESS_PATH := $(LOCAL_PATH)/config/nfcee_access.xml
-#else
-#    NFCEE_ACCESS_PATH := $(LOCAL_PATH)/config/nfcee_access_debug.xml
-#endif
-#PRODUCT_COPY_FILES += \
-    $(NFCEE_ACCESS_PATH):system/etc/nfcee_access.xml
-
-# Inhert dalvik heap values from aosp
-$(call inherit-product, frameworks/native/build/phone-xhdpi-1024-dalvik-heap.mk)
-
-# Inhert vendor proprietary files
-$(call inherit-product-if-exists, vendor/sony/nypon/nypon-vendor.mk)
-
-PRODUCT_PROPERTY_OVERRIDES += \
-  ro.hwui.texture_cache_size=11 \
-  ro.hwui.layer_cache_size=9 \
-  ro.hwui.path_cache_size=3 \
-  ro.sf.lcd_density=240 \
-  ro.sf.display_rotation=0
-
 # Hardware video codecs configurations
 PRODUCT_PROPERTY_OVERRIDES += \
-  ste.video.dec.mpeg4.in.size=8192 \
-  ste.video.enc.out.buffercnt=5 \
-  ste.video.dec.recycle.delay=1 \
-  ste.special_fast_dormancy=false \
-  ste.video.decoder.max.hwmem=0x3600000 \
-  ste.video.decoder.max.res=1080p \
-  ste.video.decoder.h264.max.lev=4.2
+	ste.video.decoder.max.hwmem=0x2600000 \
+	ste.video.decoder.max.res=720p \
+	ste.video.decoder.h264.max.lev=3.2
 
+# Device density
 PRODUCT_PROPERTY_OVERRIDES += \
-  ro.service.swiqi.supported=false \
-  persist.service.swiqi.enable=0 \
-  ste.nmf.dsp.nodump=1
+	ro.sf.lcd_density=240
 
-# NFC
-#PRODUCT_PROPERTY_OVERRIDES += \
-  ro.nfc.vendor.name=nxp
+# Dalvik
+PRODUCT_PROPERTY_OVERRIDES += \
+    dalvik.vm.heapstartsize=5m \
+    dalvik.vm.heapgrowthlimit=48m \
+    dalvik.vm.heapsize=128m \
+    dalvik.vm.heaptargetutilization=0.75 \
+    dalvik.vm.heapminfree=1m \
+    dalvik.vm.heapmaxfree=2m
 
-# Low ram
-PRODUCT_PROPERTY_OVERRIDES += ro.config.low_ram=false
-
+# Low-RAM optimizations
+PRODUCT_PROPERTY_OVERRIDES += \
+	ro.config.low_ram=true \
+	persist.sys.force_highendgfx=true \
+	dalvik.vm.jit.codecachesize=0 \
+	ro.config.max_starting_bg=8 \
+	ro.sys.fw.bg_apps_limit=16 \
+	config.disable_atlas=true
