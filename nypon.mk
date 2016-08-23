@@ -99,8 +99,8 @@ PRODUCT_PROPERTY_OVERRIDES += ro.semc.product.user_storage=emmc_only
 # Hardware video codecs configurations
 PRODUCT_PROPERTY_OVERRIDES += \
 	ste.video.decoder.max.hwmem=0x2600000 \
-	ste.video.decoder.max.res=720p \
-	ste.video.decoder.h264.max.lev=3.2
+	ste.video.decoder.max.res=1080p \
+	ste.video.decoder.h264.max.lev=4.2
 
 # Device density
 PRODUCT_PROPERTY_OVERRIDES += \
